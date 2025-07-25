@@ -1,5 +1,6 @@
 import cv2
 from pyzbar.pyzbar import decode
+import numpy as np
 
 # Función para validar si el QR contiene una URL válida
 def validar_contenido_qr(texto):
@@ -24,7 +25,9 @@ while True:
         pts = [(p.x, p.y) for p in puntos]
         if len(pts) > 4:
             pts = pts[:4]
-        cv2.polylines(frame, [np.array(pts)], isClosed=True, color=(0, 255, 0), thickness=2)
+        pts_array = np.array(pts, np.int32)
+        pts_array = pts_array.reshape((-1, 1, 2))
+        cv2.polylines(frame, [pts_array], isClosed=True, color=(0, 255, 0), thickness=2)
 
         # Texto y validación
         valido = validar_contenido_qr(texto)
